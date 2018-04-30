@@ -18,6 +18,24 @@ class NeuralNetwork:
         self.learning_rate = 0.02
 
 
+    def get_hidden_weights_and_bias(self):
+        return self.weights_IH, self.bias_H
+
+
+    def get_output_weights_and_bias(self):
+        return self.weights_HO, self.bias_O
+
+
+    def set_hidden_weights_and_bias(self, hidden_weights, hidden_bias):
+        self.weights_IH = hidden_weights
+        self.bias_H = hidden_bias
+
+
+    def set_output_weights_and_bias(self, output_weights, output_bias):
+        self.weights_HO = output_weights
+        self.bias_O = output_bias
+
+
     def sigmoid(self, x):
         return 1 / (1 + np.exp(-x))
 
