@@ -223,10 +223,6 @@ class Window(Frame):
         self.mae_f.plot(x_axis, self.mae)
 
         self.figure.canvas.draw()
-        # self.mse_f.plot(x_axis, mse_price)
-        # self.mae_f.plot(x_axis, mae_price)
-        # plt.tight_layout()
-        # plt.show()
 
 
 if __name__ == "__main__":
