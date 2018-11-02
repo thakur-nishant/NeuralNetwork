@@ -127,17 +127,17 @@ class Window(Frame):
         self.learning_rate = np.float(self.learning_rate_slider.get())
 
     def epoch_slider_callback(self):
-        self.epoch = np.float(self.epoch_slider.get())
+        self.epoch = np.int(self.epoch_slider.get())
 
     def stride_slider_callback(self):
-        self.stride = np.float(self.stride_slider.get())
+        self.stride = np.int(self.stride_slider.get())
 
     def delay_slider_callback(self):
         self.reset_weights()
-        self.delay = np.float(self.delay_slider.get())
+        self.delay = np.int(self.delay_slider.get())
 
     def data_split_slider_callback(self):
-        self.train_test_split = np.float(self.data_split_slider.get())
+        self.train_test_split = np.int(self.data_split_slider.get())
 
     def read_normalize_data(self, filename):
         res = dh.load_and_normalize_data(filename)
@@ -171,11 +171,8 @@ class Window(Frame):
             R = R / total
             h = h / total
 
-            self.weights = np.matmul(np.linalg.inv(R), h)
-
+            self.weights = np.matmul(np.linalg.inv(R), h).T
             mse_t, mae_t = self.test()
-            print(self.weights.shape)
-            print(mse_t, mae_t)
             self.mse.append(mse_t[0])
             self.mae.append(mae_t[0])
         self.plot_graph()
@@ -184,30 +181,25 @@ class Window(Frame):
         self.epoch_count += self.epoch
         for _ in range(int(self.epoch)):
             for i in range(len(self.train_data) - (int(self.delay) + 2)):
-                input_vector = self.train_data[i:i + (int(self.delay) + 1)].T.flatten().tolist()
-                input_vector.append(1)
+                input_vector = np.append(self.train_data[i:i + (int(self.delay) + 1)].T.flatten().tolist(), [1]).reshape(-1,1)
+
                 target = self.train_data[i + (int(self.delay) + 2)][0]
-                output = np.matmul(self.weights.T, np.array(input_vector).reshape(-1,1))
+                output = np.matmul(self.weights, input_vector)
                 error = target - output
-                print(self.weights.shape, input_vector.shape)
-                self.weights = self.weights + 2 * self.learning_rate * error * np.array(input_vector)
+                self.weights = self.weights + 2 * self.learning_rate * error * input_vector.T
 
             mse_t, mae_t = self.test()
-            print(self.weights.shape)
-            print(mse_t, mae_t)
-            self.mse.append(mse_t)
-            self.mae.append(mae_t)
+            self.mse.append(mse_t[0][0])
+            self.mae.append(mae_t[0][0])
         self.plot_graph()
 
     def test(self):
         mse = 0
         mae = 0
-        for i in range(len(self.test_data) - (int(self.delay) + 2)):
-            input_vector = self.test_data[i:i + (int(self.delay) + 1)].T.flatten().tolist()
-            input_vector.append(1)
-
-            target = self.train_data[i + (int(self.delay) + 2)][0]
-            output = np.dot(self.weights.T, input_vector)
+        for i in range(len(self.test_data)-(int(self.delay) + 2)):
+            input_vector = np.append(self.train_data[i:i+(int(self.delay)+1)].T.flatten().tolist(), [1]).reshape(-1, 1)
+            target = self.train_data[i+(int(self.delay)+2)][0]
+            output = np.matmul(self.weights, input_vector)
             error = target - output
             mse += error ** 2
             mae += abs(error)
@@ -223,6 +215,10 @@ class Window(Frame):
         self.mae_f.plot(x_axis, self.mae)
 
         self.figure.canvas.draw()
+        # self.mse_f.plot(x_axis, mse_price)
+        # self.mae_f.plot(x_axis, mae_price)
+        # plt.tight_layout()
+        # plt.show()
 
 
 if __name__ == "__main__":
