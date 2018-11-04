@@ -2,13 +2,10 @@
 # 1001-544-591
 # 2018-10-29
 # Assignment-04-01
-import os
 import sys
 
 import matplotlib
 import numpy as np
-import scipy.misc
-from sklearn.model_selection import train_test_split
 
 matplotlib.use('TkAgg')
 
