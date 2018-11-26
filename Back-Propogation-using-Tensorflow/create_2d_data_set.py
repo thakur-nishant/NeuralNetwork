@@ -25,6 +25,7 @@ def main():
     import matplotlib.pyplot as plt
     X, y = generate_data('s_curve', n_samples=200, n_classes=4)
     ax = plt.scatter(X[:, 0], X[:, 1], c=y, cmap=plt.cm.Accent)
+    print(y)
     plt.suptitle("S Curve", fontsize=20)
     # ax.set_title("S Curve")
     plt.show()
