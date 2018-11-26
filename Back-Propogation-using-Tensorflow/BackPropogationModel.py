@@ -26,8 +26,6 @@ class ThreeLayerNN:
         self.W2 = tf.Variable(tf.random_normal([300, 10], stddev=0.03), name='W2')
         self.b2 = tf.Variable(tf.random_normal([10]), name='b2')
 
-    def train(self):
-
         # calculate the output of the hidden layer
         hidden_out = tf.add(tf.matmul(self.X, self.W1), self.b1)
         if self.hidden_transfer_function == 'Relu':
