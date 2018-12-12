@@ -30,7 +30,7 @@ class Window(Frame):
     def init_window(self):
         # initialization
         # filename = "data_set_2.csv"
-        filename = "stock_data.csv"
+        filename = "data_set_2.csv"
         data = self.read_normalize_data(filename)
 
         self.learning_rate = 0.1
