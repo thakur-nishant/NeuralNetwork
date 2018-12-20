@@ -170,5 +170,18 @@ def conv_net(x, keep_prob):
     out = tf.contrib.layers.fully_connected(inputs=full3, num_outputs=10, activation_fn=None)
     return out
 
+epochs = 10
+batch_size = 128
+keep_probability = 0.7
+learning_rate = 0.001
 
-    
+
+logits = conv_net(x, keep_prob)
+
+# Loss and Optimizer
+cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=logits, labels=y))
+optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate).minimize(cost)
+
+# Accuracy
+correct_pred = tf.equal(tf.argmax(logits, 1), tf.argmax(y, 1))
+accuracy = tf.reduce_mean(tf.cast(correct_pred, tf.float32), name='accuracy')
