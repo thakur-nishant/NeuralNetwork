@@ -185,3 +185,29 @@ optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate).minimize(cost)
 # Accuracy
 correct_pred = tf.equal(tf.argmax(logits, 1), tf.argmax(y, 1))
 accuracy = tf.reduce_mean(tf.cast(correct_pred, tf.float32), name='accuracy')
+
+
+def train_neural_network(session, optimizer, keep_probability, feature_batch, label_batch):
+    session.run(optimizer, 
+                feed_dict={
+                    x: feature_batch,
+                    y: label_batch,
+                    keep_prob: keep_probability
+                })
+
+
+def print_stats(session, feature_batch, label_batch, cost, accuracy):
+    loss = sess.run(cost, 
+                    feed_dict={
+                        x: feature_batch,
+                        y: label_batch,
+                        keep_prob: 1.
+                    })
+    valid_acc = sess.run(accuracy, 
+                         feed_dict={
+                             x: valid_features,
+                             y: valid_labels,
+                             keep_prob: 1.
+                         })
+    
+    print('Loss: {:>10.4f} Validation Accuracy: {:.6f}'.format(loss, valid_acc))
