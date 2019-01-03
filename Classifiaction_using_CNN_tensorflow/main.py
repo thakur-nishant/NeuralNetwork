@@ -211,3 +211,20 @@ def print_stats(session, feature_batch, label_batch, cost, accuracy):
                          })
     
     print('Loss: {:>10.4f} Validation Accuracy: {:.6f}'.format(loss, valid_acc))
+
+
+
+with tf.Session() as sess:
+    # Initializing the variables
+    sess.run(tf.global_variables_initializer())
+    
+    # Training cycle
+    for epoch in range(epochs):
+        # Loop over all batches
+        n_batches = 5
+        for batch_i in range(1, n_batches + 1):
+            for batch_features, batch_labels in load_preprocess_training_batch(batch_i, batch_size):
+                train_neural_network(sess, optimizer, keep_probability, batch_features, batch_labels)
+                
+            print('Epoch {:>2}, CIFAR-10 Batch {}:  '.format(epoch + 1, batch_i), end='')
+            print_stats(sess, batch_features, batch_labels, cost, accuracy)
