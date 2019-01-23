@@ -1,4 +1,8 @@
+import pickle
+import numpy as np
 import tensorflow as tf
+
+cifar10_dataset_folder_path = "data"
 
 # read data files
 def load_cfar10_batch(cifar10_dataset_folder_path, batch_id):
@@ -14,11 +18,6 @@ def load_cfar10_batch(cifar10_dataset_folder_path, batch_id):
 
 def load_label_names():
     return ['airplane', 'automobile', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck']
-
-
-batch_id = 3
-sample_id = 7000
-display_stats(cifar10_dataset_folder_path, batch_id, sample_id)
 
 
 def normalize(x):
@@ -212,6 +211,16 @@ def print_stats(session, feature_batch, label_batch, cost, accuracy):
     
     print('Loss: {:>10.4f} Validation Accuracy: {:.6f}'.format(loss, valid_acc))
 
+
+def load_cfar10_batch(cifar10_dataset_folder_path, batch_id):
+    with open(cifar10_dataset_folder_path + '/data_batch_' + str(batch_id), mode='rb') as file:
+        # note the encoding type is 'latin1'
+        batch = pickle.load(file, encoding='latin1')
+
+    features = batch['data'].reshape((len(batch['data']), 3, 32, 32)).transpose(0, 2, 3, 1)
+    labels = batch['labels']
+
+    return features, labels
 
 
 with tf.Session() as sess:
