@@ -1,0 +1,10 @@
+
+Classifiaction_using_CNN_tensorflow/data/data_batch_1
+*.gz
+*.meta
+*.p
+Classifiaction_using_CNN_tensorflow/data/data_batch_2
+Classifiaction_using_CNN_tensorflow/data/data_batch_3
+Classifiaction_using_CNN_tensorflow/data/data_batch_4
+Classifiaction_using_CNN_tensorflow/data/data_batch_5
+Classifiaction_using_CNN_tensorflow/data/readme.html
